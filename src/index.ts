@@ -240,7 +240,13 @@ app.post('/tractors', async (req: Request<{}, {}, TractorInput>, res: Response) 
 // Read all tractors
 app.get('/tractors', async (req: Request, res: Response) => {
   try {
-    const tractors = await prisma.tractors.findMany();
+    const tractors = await prisma.tractors.findMany({
+        include: {
+            owner: true, // Include owner details
+        }
+       
+    });
+    
     res.json(tractors);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
